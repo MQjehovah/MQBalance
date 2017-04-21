@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CMSIS;..\FWLib\inc;..\User;..\Driver\USART_Driver</IncludePath>
+              <IncludePath>..\CMSIS;..\FWLib\inc;..\User;..\Driver\USART_Driver;..\Driver\IIC</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -468,6 +468,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\stm32f10x_it.c</FilePath>
             </File>
+            <File>
+              <FileName>MPU6050.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\MPU6050.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -477,6 +482,11 @@
               <FileName>USART_Driver.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Driver\USART_Driver\USART_Driver.c</FilePath>
+            </File>
+            <File>
+              <FileName>IIC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\IIC\IIC.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -48,10 +48,10 @@ Temporary Items
 
 #project
 /backup/
-/document/Reference/
+/doc/local/
 
 #AD backup
-/drawing/MQBalance_sch/History/
+/layout/MQBalance_sch/History/
 
 #Keil output
 /src/MQBalance/Project/List/

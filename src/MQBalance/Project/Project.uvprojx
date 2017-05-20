@@ -123,7 +123,7 @@
             <Oh166RecLen>16</Oh166RecLen>
           </OPTHX>
           <Simulator>
-            <UseSimulator>0</UseSimulator>
+            <UseSimulator>1</UseSimulator>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
             <RunToMain>1</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
@@ -135,7 +135,7 @@
             <RestoreSysVw>1</RestoreSysVw>
           </Simulator>
           <Target>
-            <UseTarget>1</UseTarget>
+            <UseTarget>0</UseTarget>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
             <RunToMain>1</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
@@ -147,7 +147,7 @@
             <RestoreSysVw>1</RestoreSysVw>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
-          <TargetSelection>6</TargetSelection>
+          <TargetSelection>4</TargetSelection>
           <SimDlls>
             <CpuDll></CpuDll>
             <CpuDllArguments></CpuDllArguments>
@@ -359,13 +359,13 @@
             <wLevel>0</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
-            <uC99>0</uC99>
+            <uC99>1</uC99>
             <useXO>0</useXO>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CMSIS;..\FWLib\inc;..\User;..\Driver\USART_Driver;..\Driver\IIC</IncludePath>
+              <IncludePath>..\CMSIS;..\FWLib\include;..\User\include;..\Driver\include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -406,16 +406,6 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>Startup</GroupName>
-          <Files>
-            <File>
-              <FileName>startup_stm32f10x_ld.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\Startup\startup_stm32f10x_ld.s</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>CMSIS</GroupName>
           <Files>
             <File>
@@ -428,6 +418,11 @@
               <FileType>1</FileType>
               <FilePath>..\CMSIS\system_stm32f10x.c</FilePath>
             </File>
+            <File>
+              <FileName>startup_stm32f10x_ld.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\CMSIS\Startup\startup_stm32f10x_ld.s</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -436,22 +431,22 @@
             <File>
               <FileName>misc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\FWLib\src\misc.c</FilePath>
+              <FilePath>..\FWLib\misc.c</FilePath>
             </File>
             <File>
               <FileName>stm32f10x_rcc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\FWLib\src\stm32f10x_rcc.c</FilePath>
+              <FilePath>..\FWLib\stm32f10x_rcc.c</FilePath>
             </File>
             <File>
               <FileName>stm32f10x_gpio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\FWLib\src\stm32f10x_gpio.c</FilePath>
+              <FilePath>..\FWLib\stm32f10x_gpio.c</FilePath>
             </File>
             <File>
               <FileName>stm32f10x_usart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\FWLib\src\stm32f10x_usart.c</FilePath>
+              <FilePath>..\FWLib\stm32f10x_usart.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -469,9 +464,9 @@
               <FilePath>..\User\stm32f10x_it.c</FilePath>
             </File>
             <File>
-              <FileName>MPU6050.c</FileName>
+              <FileName>delay.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\User\MPU6050.c</FilePath>
+              <FilePath>..\User\delay.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -479,14 +474,24 @@
           <GroupName>Driver</GroupName>
           <Files>
             <File>
-              <FileName>USART_Driver.c</FileName>
+              <FileName>GPIO.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Driver\USART_Driver\USART_Driver.c</FilePath>
+              <FilePath>..\Driver\GPIO.c</FilePath>
+            </File>
+            <File>
+              <FileName>USART.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\USART.c</FilePath>
             </File>
             <File>
               <FileName>IIC.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Driver\IIC\IIC.c</FilePath>
+              <FilePath>..\Driver\IIC.c</FilePath>
+            </File>
+            <File>
+              <FileName>MPU6050.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\MPU6050.c</FilePath>
             </File>
           </Files>
         </Group>

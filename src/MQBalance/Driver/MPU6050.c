@@ -19,7 +19,7 @@
 *******************************************************************************/
 u8 MPUInit(void)
 {
-	u8 res;
+	//u8 res;
 	u8 id = 0;
 	if(IIC_ReadOneByte(MPU_ADDR,MPU6050_RA_WHO_AM_I,&id))
 	{
@@ -27,7 +27,7 @@ u8 MPUInit(void)
 		id>>= 1;
 		if(id != 0x34) 
 		{
-			printf("error id\r\n");
+			//printf("error id\r\n");
 			return 0;	//获取到的芯片ID错误
 		}
 	}
@@ -41,7 +41,7 @@ u8 MPUInit(void)
     IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_INT_PIN_CFG, 0x32);					// 中断信号为高电平，推挽输出，直到有读取操作才消失，直通辅助I2C。
     IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_INT_ENABLE, 0x01);					// 使用“数据准备好”中断。
     IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_USER_CTRL, 0x00);					// 不使用辅助I2C。
-	printf("Init MPU6050 OK!\r\n");
+	//printf("Init MPU6050 OK!\r\n");
     return 1;
 }
 /*********************************END OF FILE**********************************/

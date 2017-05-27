@@ -11,26 +11,28 @@
 #define  _IIC_H
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f10x_conf.h"
-#include "GPIO.h"
+#include "stm32f10x.h" //提供u8等宏定义
 #include "delay.h"
 /* Definition ----------------------------------------------------------------*/
 #define  I2C_Direction_Transmitter      ((uint8_t)0x00)	//写
 #define  I2C_Direction_Receiver         ((uint8_t)0x01)	//读
 
-#define IIC_SCL_GPIO    PB0
-#define IIC_SDA_GPIO    PB1
+#define IIC_SCL_Port    GPIOA
+#define IIC_SCL_Pin     GPIO_Pin_0
+
+#define IIC_SDA_Port    GPIOA
+#define IIC_SDA_Pin     GPIO_Pin_1 
 
 
 //IO操作函数	 
-#define IIC_SCL_H       GPIO_WritePin(&IIC_SCL_GPIO,HIGH)	           //GPIOA->BSRR = SCCB_SIC_BIT;  对端口A特定位的设置	,这里设置高
-#define IIC_SCL_L       GPIO_WritePin(&IIC_SCL_GPIO,LOW)              //GPIOA->BRR =  SCCB_SIC_BIT;  这里设置低
+#define IIC_SCL_H       GPIO_SetBits(IIC_SCL_Port,IIC_SCL_Pin)	           //GPIOA->BSRR = SCCB_SIC_BIT;  对端口A特定位的设置	,这里设置高
+#define IIC_SCL_L       GPIO_ResetBits(IIC_SCL_Port,IIC_SCL_Pin)             //GPIOA->BRR =  SCCB_SIC_BIT;  这里设置低
 
-#define IIC_SDA_H       GPIO_WritePin(&IIC_SDA_GPIO,HIGH)   	         //GPIOA->BSRR = SCCB_SID_BIT;  
-#define IIC_SDA_L       GPIO_WritePin(&IIC_SDA_GPIO,LOW)              //GPIOA->BRR =  SCCB_SID_BIT;
+#define IIC_SDA_H       GPIO_SetBits(IIC_SDA_Port,IIC_SDA_Pin)	           //GPIOA->BSRR = SCCB_SID_BIT;  
+#define IIC_SDA_L       GPIO_ResetBits(IIC_SDA_Port,IIC_SDA_Pin)             //GPIOA->BRR =  SCCB_SID_BIT;
 
-#define IIC_SDA_READ    GPIO_ReadPin(&IIC_SDA_GPIO)                   //GPIOB->IDR&0x04 输入SDA  GPIOB->IDR&0x40    
-
+#define IIC_SDA_READ    GPIO_ReadInputDataBit(IIC_SDA_Port,IIC_SDA_Pin)      //GPIOB->IDR&0x04 输入SDA  GPIOB->IDR&0x40    
+#define Delay_us(s)		simple_delay_us(s)
 // 对于STM32平台可用下列宏定义完成SDA的输入与输出配置
 // 其他平台请自行实现IIC_SDA_GPIO_INPUT和IIC_SDA_GPIO_OUTPUT两个函数
 // 寄存器设置SDA引脚输入输出模式

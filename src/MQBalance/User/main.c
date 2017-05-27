@@ -9,7 +9,9 @@
 *******************************************************************************/
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+
 #include "stdio.h"
+#include "MPU6050.h"
 /* Definition ----------------------------------------------------------------*/
 /* Functions -----------------------------------------------------------------*/
 /*******************************************************************************
@@ -41,6 +43,17 @@ void NVIC_Config(void)//配置中断优先级
 //  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;    
 //  NVIC_Init(&NVIC_InitStructure);    
 }    
+
+void TickHandle()
+{
+	static u16 TickCnt;
+	TickCnt++;
+	if(TickCnt>5)
+	{
+		TickCnt=0;
+		
+	}
+}
 /*******************************************************************************
   * @brief  主函数             
   * @param  None              
@@ -51,14 +64,20 @@ int main(void)
 {
 	RCC_Config();
 	NVIC_Config();
-	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable,ENABLE);//关闭jtag，保留swd。
-//	SysTick_init();
+	//GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable,ENABLE);//关闭jtag，保留swd。
+	SysTick_init();
+	SysTick_BindHandle(TickHandle);
 	USART_Config(USART1,9600);
-	USART_SendStr(USART1,"Init OK\n");
+	while(!MPUInit())
+	{
+		USART_SendStr(USART1,"MPU6050 failed\n");
+		simple_delay_ms(500);
+	}
+	//USART_SendStr(USART1,"Init OK\n");
 	while(1)
 	{
 		simple_delay_ms(500);
-		USART_SendStr(USART1,"MQBalance test\n");
+		//USART_SendStr(USART1,"MQBalance test\n");
 	}
 }
 /*********************************END OF FILE**********************************/

@@ -20,9 +20,18 @@
 *******************************************************************************/ 
 void IIC_Init(void)
 {					     
-	GPIO_Config(&IIC_SCL_GPIO,GPIO_Mode_Out_PP);
-	GPIO_Config(&IIC_SDA_GPIO,GPIO_Mode_Out_PP);
-
+	GPIO_InitTypeDef GPIO_InitStructure;
+	
+	GPIO_InitStructure.GPIO_Pin = IIC_SCL_Pin;		  //端口配置
+ 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;  //输入
+ 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 	GPIO_Init(IIC_SCL_Port, &GPIO_InitStructure);
+	
+	GPIO_InitStructure.GPIO_Pin = IIC_SDA_Pin;		  //端口配置
+ 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;  //输入
+ 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 	GPIO_Init(IIC_SDA_Port, &GPIO_InitStructure);
+	
  	IIC_SCL_H;						                  //输出高
  	IIC_SDA_H;
 }
@@ -38,9 +47,9 @@ void IIC_Start(void)
 	IIC_SDA_OUT;    //SDA线输出
 	IIC_SDA_H;	  	  
 	IIC_SCL_H;
-	simple_delay_us(IIC_PAUSE);
+	Delay_us(IIC_PAUSE);
  	IIC_SDA_L;		//START:when CLK is high,DATA change form high to low 
-	simple_delay_us(IIC_PAUSE);
+	Delay_us(IIC_PAUSE);
 	IIC_SCL_L;      //钳住I2C总线，准备发送或接收数据 
 }	
 /*******************************************************************************
@@ -54,10 +63,10 @@ void IIC_Stop(void)
 	IIC_SDA_OUT;    //SDA线输出
 	IIC_SCL_L;
 	IIC_SDA_L;      //STOP:when CLK is high DATA change form low to high
- 	simple_delay_us(IIC_PAUSE);
+ 	Delay_us(IIC_PAUSE);
 	IIC_SCL_H; 
 	IIC_SDA_H;      //发送I2C总线结束信号
-	simple_delay_us(IIC_PAUSE);							   	
+	Delay_us(IIC_PAUSE);							   	
 }
 
 /*******************************************************************************
@@ -71,10 +80,10 @@ u8 IIC_Wait_Ack(void)
 {
 	uint16_t ucErrTime=0;
 	IIC_SDA_IN;             //SDA设置为输入  
-	IIC_SDA_H;
-	simple_delay_us(IIC_PAUSE);	   
+//	IIC_SDA_H;
+	Delay_us(IIC_PAUSE);	   
 	IIC_SCL_H;
-	simple_delay_us(IIC_PAUSE);
+	Delay_us(IIC_PAUSE);
 	while(IIC_SDA_READ)
 	{
 		ucErrTime++;
@@ -98,9 +107,9 @@ void IIC_Ack(void)
 	IIC_SCL_L;
 	IIC_SDA_OUT;
 	IIC_SDA_L;
-	simple_delay_us(IIC_PAUSE);
+	Delay_us(IIC_PAUSE);
 	IIC_SCL_H;
-	simple_delay_us(IIC_PAUSE);
+	Delay_us(IIC_PAUSE);
 	IIC_SCL_L;
 }
 
@@ -115,9 +124,9 @@ void IIC_NAck(void)
 	IIC_SCL_L;
 	IIC_SDA_OUT;
 	IIC_SDA_H;
-	simple_delay_us(IIC_PAUSE);
+	Delay_us(IIC_PAUSE);
 	IIC_SCL_H;
-	simple_delay_us(IIC_PAUSE);
+	Delay_us(IIC_PAUSE);
 	IIC_SCL_L;
 }
 
@@ -134,11 +143,11 @@ u8 IIC_Read_Byte(void)
     for(i=0;i<8;i++ )
 	{
         IIC_SCL_L; 
-        simple_delay_us(IIC_PAUSE);
+        Delay_us(IIC_PAUSE);
 		IIC_SCL_H;
         receive<<=1;
         if(IIC_SDA_READ)receive|=0x01;   
-		    simple_delay_us(IIC_PAUSE); 
+		    Delay_us(IIC_PAUSE); 
     }	
 //    在读取字节时发送ACK信号，注释后需要在读写时用IIC_Ack和IIC_NAck手动发送	
 //    if (!ack)
@@ -165,17 +174,17 @@ void IIC_Send_Byte(u8 txd)
         if(txd&0x80)IIC_SDA_H;
 		else IIC_SDA_L;
         txd<<=1; 	  
-		simple_delay_us(IIC_PAUSE);   //对TEA5767这三个延时都是必须的
+		Delay_us(IIC_PAUSE);   //对TEA5767这三个延时都是必须的
 		IIC_SCL_H;
-		simple_delay_us(IIC_PAUSE); 
+		Delay_us(IIC_PAUSE); 
 		IIC_SCL_L;	
-		simple_delay_us(IIC_PAUSE);
+		Delay_us(IIC_PAUSE);
     }
 	//在发送字节时接收ACK信号，注释后需要在读写时用IIC_Wait_Ack手动判断
 	//IIC_SDA_IN;		               //设置SDA为输入 
-	//simple_delay_us(IIC_PAUSE);
+	//Delay_us(IIC_PAUSE);
 	//IIC_SCL_H;			           //接收第九位,以判断是否发送成功
-	//simple_delay_us(IIC_PAUSE);
+	//Delay_us(IIC_PAUSE);
 	//if(IIC_SDA_READ)res=1;          //SDA=1发送失败，返回1
 	//else res=0;                      //SDA=0发送成功，返回0
 	//IIC_SCL_L;		 
@@ -322,11 +331,21 @@ u16 IIC_GetErrorCounter(void)
 
 void IIC_SDA_GPIO_OUTPUT(void)  //设置SID引脚为输出模式
 {
-	GPIO_Config(&IIC_SDA_GPIO,GPIO_Mode_Out_PP);
+	GPIO_InitTypeDef GPIO_InitStructure;
+	
+	GPIO_InitStructure.GPIO_Pin = IIC_SDA_Pin;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(IIC_SDA_Port, &GPIO_InitStructure);
 }
 
 void IIC_SDA_GPIO_INPUT(void)   //设置SID引脚为输入模式
 {
-	GPIO_Config(&IIC_SDA_GPIO,GPIO_Mode_IPU);
+	GPIO_InitTypeDef GPIO_InitStructure;
+	
+	GPIO_InitStructure.GPIO_Pin =  IIC_SDA_Pin;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(IIC_SDA_Port, &GPIO_InitStructure);
 }
 /*********************************END OF FILE**********************************/

@@ -7,41 +7,41 @@
   ******************************************************************************
   * @attention
 *******************************************************************************/
-#ifndef __MAIN_H
-#define __MAIN_H
+#ifndef __MPU6050_H
+#define __MPU6050_H
 
 /* Includes ------------------------------------------------------------------*/
 #include "IIC.h"
 /* Definition ----------------------------------------------------------------*/
-#define	MPU_ADDR	0xD0	//IIC写入时的地址字节数据
-#define MPU6050_ADDRESS_AD0_LOW     0xD0 // AD0为低的时候设备的写地址
-#define MPU6050_ADDRESS_AD0_HIGH    0XD1 // AD0为高的时候设备的写地址
+#define	MPU_ADDR	0xD0					//IIC写入时的地址字节数据
+#define MPU6050_ADDRESS_AD0_LOW     0xD0	// AD0为低的时候设备的写地址
+#define MPU6050_ADDRESS_AD0_HIGH    0XD1	// AD0为高的时候设备的写地址
 //技术文档未公布的寄存器 主要用于官方DMP操作
-#define MPU6050_RA_XG_OFFS_TC       0x00 //[bit7] PWR_MODE, [6:1] XG_OFFS_TC, [bit 0] OTP_BNK_VLD
-#define MPU6050_RA_YG_OFFS_TC       0x01 //[7] PWR_MODE, [6:1] YG_OFFS_TC, [0] OTP_BNK_VLD
-										 //bit7的定义,当设置为1,辅助I2C总线高电平是VDD。当设置为0,辅助I2C总线高电平是VLOGIC
-#define MPU6050_RA_ZG_OFFS_TC       0x02 //[7] PWR_MODE, [6:1] ZG_OFFS_TC, [0] OTP_BNK_VLD
-#define MPU6050_RA_X_FINE_GAIN      0x03 //[7:0] X_FINE_GAIN
-#define MPU6050_RA_Y_FINE_GAIN      0x04 //[7:0] Y_FINE_GAIN
-#define MPU6050_RA_Z_FINE_GAIN      0x05 //[7:0] Z_FINE_GAIN
+#define MPU6050_RA_XG_OFFS_TC		0x00	//[bit7] PWR_MODE, [6:1] XG_OFFS_TC, [bit 0] OTP_BNK_VLD
+#define MPU6050_RA_YG_OFFS_TC		0x01	//[7] PWR_MODE, [6:1] YG_OFFS_TC, [0] OTP_BNK_VLD
+											//bit7的定义,当设置为1,辅助I2C总线高电平是VDD。当设置为0,辅助I2C总线高电平是VLOGIC
+#define MPU6050_RA_ZG_OFFS_TC		0x02	//[7] PWR_MODE, [6:1] ZG_OFFS_TC, [0] OTP_BNK_VLD
+#define MPU6050_RA_X_FINE_GAIN		0x03	//[7:0] X_FINE_GAIN
+#define MPU6050_RA_Y_FINE_GAIN		0x04	//[7:0] Y_FINE_GAIN
+#define MPU6050_RA_Z_FINE_GAIN		0x05	//[7:0] Z_FINE_GAIN
 
-#define MPU6050_RA_XA_OFFS_H        0x06 //[15:0] XA_OFFS 两个寄存器合在一起
-#define MPU6050_RA_XA_OFFS_L_TC     0x07
+#define MPU6050_RA_XA_OFFS_H		0x06	//[15:0] XA_OFFS 两个寄存器合在一起
+#define MPU6050_RA_XA_OFFS_L_TC		0x07
 
-#define MPU6050_RA_YA_OFFS_H        0x08 //[15:0] YA_OFFS 两个寄存器合在一起
-#define MPU6050_RA_YA_OFFS_L_TC     0x09
+#define MPU6050_RA_YA_OFFS_H		0x08	//[15:0] YA_OFFS 两个寄存器合在一起
+#define MPU6050_RA_YA_OFFS_L_TC		0x09
 
-#define MPU6050_RA_ZA_OFFS_H        0x0A //[15:0] ZA_OFFS 两个寄存器合在一起
-#define MPU6050_RA_ZA_OFFS_L_TC     0x0B
+#define MPU6050_RA_ZA_OFFS_H		0x0A	//[15:0] ZA_OFFS 两个寄存器合在一起
+#define MPU6050_RA_ZA_OFFS_L_TC		0x0B
 
-#define MPU6050_RA_XG_OFFS_USRH     0x13 //[15:0] XG_OFFS_USR 两个寄存器合在一起
-#define MPU6050_RA_XG_OFFS_USRL     0x14
+#define MPU6050_RA_XG_OFFS_USRH		0x13	//[15:0] XG_OFFS_USR 两个寄存器合在一起
+#define MPU6050_RA_XG_OFFS_USRL		0x14
 
-#define MPU6050_RA_YG_OFFS_USRH     0x15 //[15:0] YG_OFFS_USR 两个寄存器合在一起
-#define MPU6050_RA_YG_OFFS_USRL     0x16
+#define MPU6050_RA_YG_OFFS_USRH		0x15	//[15:0] YG_OFFS_USR 两个寄存器合在一起
+#define MPU6050_RA_YG_OFFS_USRL		0x16
 
-#define MPU6050_RA_ZG_OFFS_USRH     0x17 //[15:0] ZG_OFFS_USR 两个寄存器合在一起
-#define MPU6050_RA_ZG_OFFS_USRL     0x18
+#define MPU6050_RA_ZG_OFFS_USRH		0x17	//[15:0] ZG_OFFS_USR 两个寄存器合在一起
+#define MPU6050_RA_ZG_OFFS_USRL		0x18
 
 /*陀螺仪的采样频率*/
 /*传感器的寄存器输出,FIFO输出,DMP采样、运动检测、
@@ -595,6 +595,6 @@
 #define MPU6050_RA_WHO_AM_I         0x75
 //bit6-bit1 设备身份验证 0x34 最高位和最低位都剔除掉
 /* Exported Functions --------------------------------------------------------*/
-
+u8 MPUInit(void);
 #endif
 /*********************************END OF FILE**********************************/

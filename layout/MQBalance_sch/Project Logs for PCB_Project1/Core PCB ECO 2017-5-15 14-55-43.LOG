@@ -1,4 +1,0 @@
-Change Component Footprint: Designator=key2 Old Footprint=3*6*2.5KEY New Footprint=BTN2 - 3x6-SMD
-Change Component Footprint: Designator=key3 Old Footprint=3*6*2.5KEY New Footprint=BTN2 - 3x6-SMD
-Change Component Footprint: Designator=U6 Old Footprint=LQFP48_N New Footprint=LQFP48
-Added Room: Name=Core

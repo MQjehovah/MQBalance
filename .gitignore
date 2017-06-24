@@ -51,7 +51,8 @@ Temporary Items
 /doc/local/
 
 #AD backup
-/layout/MQBalance_sch/History/
+/layout/*/History/
+/layout/*/Project Logs for */
 
 #Keil output
 /src/MQBalance/Project/List/

@@ -17,7 +17,7 @@
 /* Functions -----------------------------------------------------------------*/
 /*******************************************************************************
   * @brief  时钟配置            
-  * @param  None              
+  * @param  None 
   * @retval None              
   * @Note   None              
 *******************************************************************************/
@@ -45,7 +45,7 @@ void NVIC_Config(void)//配置中断优先级
 //  NVIC_Init(&NVIC_InitStructure);    
 }    
 
-void TickHandle()
+void Tick_CallBack()
 {
 	static u16 TickCnt;
 	TickCnt++;
@@ -66,7 +66,7 @@ int main(void)
 	NVIC_Config();
 	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable,ENABLE);//关闭jtag，保留swd。
 	SysTick_init();
-	SysTick_BindHandle(TickHandle);
+	SysTick_BindHandle(Tick_CallBack);
 	LED_init();
 	LED_Flash(0,500,2);
 	USART_Config(USART1,9600);

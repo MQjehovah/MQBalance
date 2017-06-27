@@ -50,10 +50,11 @@ Temporary Items
 /backup/
 /doc/local/
 
-#AD backup
+#AD backup and output
 /layout/*/History/
 /layout/*/Project Logs for */
+/layout/*/Project Outputs for  */
 
 #Keil output
-/src/MQBalance/Project/List/
-/src/MQBalance/Project/OutPut/
+/src/*/Project/List/
+/src/*/Project/OutPut/

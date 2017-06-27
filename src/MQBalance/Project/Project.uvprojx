@@ -493,6 +493,21 @@
               <FileType>1</FileType>
               <FilePath>..\Driver\MPU6050.c</FilePath>
             </File>
+            <File>
+              <FileName>ENCODE.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\ENCODE.c</FilePath>
+            </File>
+            <File>
+              <FileName>LED.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\LED.c</FilePath>
+            </File>
+            <File>
+              <FileName>TIMER.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\TIMER.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

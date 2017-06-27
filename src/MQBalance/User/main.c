@@ -11,6 +11,7 @@
 #include "main.h"
 
 #include "stdio.h"
+#include "LED.h"
 #include "MPU6050.h"
 /* Definition ----------------------------------------------------------------*/
 /* Functions -----------------------------------------------------------------*/
@@ -51,7 +52,6 @@ void TickHandle()
 	if(TickCnt>5)
 	{
 		TickCnt=0;
-		
 	}
 }
 /*******************************************************************************
@@ -64,10 +64,14 @@ int main(void)
 {
 	RCC_Config();
 	NVIC_Config();
-	//GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable,ENABLE);//关闭jtag，保留swd。
+	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable,ENABLE);//关闭jtag，保留swd。
 	SysTick_init();
 	SysTick_BindHandle(TickHandle);
+	LED_init();
+	LED_Flash(0,500,2);
 	USART_Config(USART1,9600);
+	USART_SendStr(USART1,"USART Init\n");
+	
 	while(!MPUInit())
 	{
 		USART_SendStr(USART1,"MPU6050 failed\n");

@@ -36,9 +36,9 @@ void TIM_Config(TIM_DEV dev)
 	//时钟统一由RCC_Config配置
 	TIM_DeInit(dev.timer);
 	//((1+TIM_Prescaler )/72M)*(1+TIM_Period )=((1+7199)/72M)*(1+9999)=1秒 */ 
-	TIM_TimeBaseStructure.TIM_Period=1000-1;					//定时器周期
-	TIM_TimeBaseStructure.TIM_Prescaler=720-1;					//预分频数
-	TIM_TimeBaseStructure.TIM_ClockDivision=TIM_CKD_DIV2;		//TIM2时钟分频,为1表示不分频
+	TIM_TimeBaseStructure.TIM_Period=7200-1;					//定时器周期
+	TIM_TimeBaseStructure.TIM_Prescaler=1-1;					//预分频数
+	TIM_TimeBaseStructure.TIM_ClockDivision=TIM_CKD_DIV1;		//TIM2时钟分频,为1表示不分频
 	TIM_TimeBaseStructure.TIM_CounterMode=TIM_CounterMode_Up;	//定时器计数为向上计数模式
 	TIM_TimeBaseInit(dev.timer, &TIM_TimeBaseStructure);     
 

@@ -13,35 +13,34 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h" //提供u8等宏定义
 #include "delay.h"
+#include "GPIO.h"
 /* Definition ----------------------------------------------------------------*/
 #define  I2C_Direction_Transmitter      ((uint8_t)0x00)	//写
 #define  I2C_Direction_Receiver         ((uint8_t)0x01)	//读
 
-#define IIC_SCL_Port    GPIOA
-#define IIC_SCL_Pin     GPIO_Pin_0
+#define IIC_SCL_GPIO    	PA4
+#define IIC_SDA_GPIO    	PA5
 
-#define IIC_SDA_Port    GPIOA
-#define IIC_SDA_Pin     GPIO_Pin_1 
+#define IIC_SCL_H       	GPIO_WritePin(&IIC_SCL_GPIO,HIGH)	      //GPIOA->BSRR = SCCB_SIC_BIT;  对端口A特定位的设置	,这里设置高
+#define IIC_SCL_L       	GPIO_WritePin(&IIC_SCL_GPIO,LOW)			//GPIOA->BRR =  SCCB_SIC_BIT;  这里设置低
 
+#define IIC_SDA_H       	GPIO_WritePin(&IIC_SDA_GPIO,HIGH)         //GPIOA->BSRR = SCCB_SID_BIT;  
+#define IIC_SDA_L       	GPIO_WritePin(&IIC_SDA_GPIO,LOW)            //GPIOA->BRR =  SCCB_SID_BIT;
+
+#define IIC_SDA_READ    	GPIO_ReadPin(&IIC_SDA_GPIO)      //GPIOB->IDR&0x04 输入SDA  GPIOB->IDR&0x40    
+#define IIC_delay_us(s)		simple_delay_us(s)
 
 //IO操作函数	 
-#define IIC_SCL_H       GPIO_SetBits(IIC_SCL_Port,IIC_SCL_Pin)	           //GPIOA->BSRR = SCCB_SIC_BIT;  对端口A特定位的设置	,这里设置高
-#define IIC_SCL_L       GPIO_ResetBits(IIC_SCL_Port,IIC_SCL_Pin)             //GPIOA->BRR =  SCCB_SIC_BIT;  这里设置低
 
-#define IIC_SDA_H       GPIO_SetBits(IIC_SDA_Port,IIC_SDA_Pin)	           //GPIOA->BSRR = SCCB_SID_BIT;  
-#define IIC_SDA_L       GPIO_ResetBits(IIC_SDA_Port,IIC_SDA_Pin)             //GPIOA->BRR =  SCCB_SID_BIT;
-
-#define IIC_SDA_READ    GPIO_ReadInputDataBit(IIC_SDA_Port,IIC_SDA_Pin)      //GPIOB->IDR&0x04 输入SDA  GPIOB->IDR&0x40    
-#define Delay_us(s)		simple_delay_us(s)
 // 对于STM32平台可用下列宏定义完成SDA的输入与输出配置
 // 其他平台请自行实现IIC_SDA_GPIO_INPUT和IIC_SDA_GPIO_OUTPUT两个函数
 // 寄存器设置SDA引脚输入输出模式
-//#define IIC_SDA_IN  {GPIOA->CRL&=0XFF0FFFFF;GPIOA->CRL|=0X00800000;}
-//#define IIC_SDA_OUT {GPIOA->CRL&=0XFF0FFFFF;GPIOA->CRL|=0X00300000;}
-#define IIC_SDA_IN      IIC_SDA_GPIO_INPUT()
-#define IIC_SDA_OUT     IIC_SDA_GPIO_OUTPUT()
+#define IIC_SDA_IN			GPIO_Config(&IIC_SDA_GPIO,GPIO_Mode_IPU);
+#define IIC_SDA_OUT			GPIO_Config(&IIC_SDA_GPIO,GPIO_Mode_Out_PP);
+//#define IIC_SDA_IN      IIC_SDA_GPIO_INPUT()
+//#define IIC_SDA_OUT     IIC_SDA_GPIO_OUTPUT()
 // IIC通信中延时
-#define IIC_PAUSE       4
+#define IIC_PAUSE       10
 /* Exported Functions --------------------------------------------------------*/
 void IIC_Init(void);        //初始化IIC的IO口	
 void IIC_Start(void);

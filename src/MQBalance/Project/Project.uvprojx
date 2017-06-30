@@ -448,6 +448,16 @@
               <FileType>1</FileType>
               <FilePath>..\FWLib\stm32f10x_usart.c</FilePath>
             </File>
+            <File>
+              <FileName>stm32f10x_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\FWLib\stm32f10x_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\FWLib\stm32f10x_exti.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

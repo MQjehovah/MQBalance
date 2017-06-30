@@ -596,12 +596,12 @@
 //bit6-bit1 设备身份验证 0x34 最高位和最低位都剔除掉
 /* Exported Functions --------------------------------------------------------*/
 u8 MPUInit(void);
-u8 MPU_GetAccelX(short *pAccelX);
-u8 MPU_GetAccelY(short *pAccelY);
-u8 MPU_GetAccelZ(short *pAccelZ);
-u8 MPU_GetGyroX(short *pGyroX);
-u8 MPU_GetGyroY(short *pGyroY);
-u8 MPU_GetGyroZ(short *pGyroZ);
+u8 MPU_GetAccelX(u16 *pAccelX);
+u8 MPU_GetAccelY(u16 *pAccelY);
+u8 MPU_GetAccelZ(u16 *pAccelZ);
+u8 MPU_GetGyroX(u16 *pGyroX);
+u8 MPU_GetGyroY(u16 *pGyroY);
+u8 MPU_GetGyroZ(u16 *pGyroZ);
 
 #endif
 /*********************************END OF FILE**********************************/

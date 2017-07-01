@@ -40,7 +40,7 @@
 //#define IIC_SDA_IN      IIC_SDA_GPIO_INPUT()
 //#define IIC_SDA_OUT     IIC_SDA_GPIO_OUTPUT()
 // IIC通信中延时
-#define IIC_PAUSE       10
+#define IIC_PAUSE			4
 /* Exported Functions --------------------------------------------------------*/
 void IIC_Init(void);        //初始化IIC的IO口	
 void IIC_Start(void);
@@ -52,6 +52,8 @@ u8 IIC_Read_Byte(void);
 void IIC_Send_Byte(u8 txd);
 u8 IIC_ReadOneByte(u8 addr, u8 reg, u8* data);
 u8 IIC_WriteOneByte(u8 addr, u8 reg, u8 data);
+u8 IIC_ReadByte(u8 addr, u8 reg);
+void IIC_WriteByte(u8 addr, u8 reg, u8 data);
 u8 IIC_Read_Buffer(u8 addr, u8 reg, u8 len, u8* buf);
 u8 IIC_Write_Buffer(u8 addr, u8 reg, u8 len, u8* data);
 u16 IIC_GetErrorCounter(void);

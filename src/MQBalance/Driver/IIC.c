@@ -212,6 +212,34 @@ u8 IIC_ReadOneByte(u8 addr, u8 reg, u8* data)
 }
 
 /*******************************************************************************
+  * @brief  强制读一个字节	             
+  * @param  addr：器件slave_address
+			reg ：从器件将要写入数据的地址      
+  * @retval None
+  * @Note   强制读取一个字节，不成功则返回0         
+*******************************************************************************/ 
+u8 IIC_ReadByte(u8 addr, u8 reg)
+{
+	u8 data;
+    IIC_Start();
+    IIC_Send_Byte(addr << 1 | I2C_Direction_Transmitter);
+    if (IIC_Wait_Ack()) 
+	{
+        IIC_Stop();
+        return 0;
+    }
+    IIC_Send_Byte(reg);
+    IIC_Wait_Ack();
+	IIC_Start();
+	IIC_Send_Byte(addr << 1 | I2C_Direction_Receiver);
+	IIC_Wait_Ack();
+    data = IIC_Read_Byte();
+    IIC_NAck();
+    IIC_Stop();
+    return data;
+}
+
+/*******************************************************************************
   * @brief  写一个字节	             
   * @param  addr：器件slave_address
 			reg ：从器件将要写入数据的地址
@@ -237,6 +265,28 @@ u8 IIC_WriteOneByte(u8 addr, u8 reg, u8 data)
     return 1;
 }
 
+/*******************************************************************************
+  * @brief  强制写一个字节	             
+  * @param  addr：器件slave_address
+			reg ：从器件将要写入数据的地址
+			data：将要写入的一个数据           
+  * @retval None              
+  * @Note   强制写一个字节             
+*******************************************************************************/ 
+void IIC_WriteByte(u8 addr, u8 reg, u8 data)
+{
+    IIC_Start();
+    IIC_Send_Byte(addr << 1 | I2C_Direction_Transmitter);
+    if (IIC_Wait_Ack()) 
+	{
+        IIC_Stop();
+    }
+    IIC_Send_Byte(reg);
+    IIC_Wait_Ack();
+    IIC_Send_Byte(data);
+    IIC_Wait_Ack();
+    IIC_Stop();
+}
 /*******************************************************************************
   * @brief  读数据	             
   * @param  addr：器件slave_address

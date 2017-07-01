@@ -54,13 +54,13 @@ void ENCODE_TIM_Init(void)
     TIM_Cmd(TIM2, ENABLE);
 }
 
-void TIM2_IRQHandler(void)
-{
-    if(TIM2->SR & 0X0001) //溢出中断
-    {
-    }
-    TIM2->SR &= ~(1 << 0); //清除中断标志位
-}
+//void TIM2_IRQHandler(void)
+//{
+//    if(TIM2->SR & 0X0001) //溢出中断
+//    {
+//    }
+//    TIM2->SR &= ~(1 << 0); //清除中断标志位
+//}
 /*******************************************************************************
   * @brief  单位时间读取编码器计数
   * @param  定时器

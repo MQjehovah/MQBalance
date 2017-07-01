@@ -23,7 +23,7 @@ void (*SysTick_CB)(void);
 *******************************************************************************/
 void SysTick_init()
 {
-	if(SysTick_Config(SystemCoreClock / 1000)) //系统滴答时钟100us
+	if(SysTick_Config(SystemCoreClock / 1000)) //系统滴答时钟1ms
 	while(1);
 }
 /*******************************************************************************
@@ -55,7 +55,7 @@ void SysTick_ClearBind()
 void delay_ms(u32 nTime)
 {
 	u32 start = sys_Time;
-	while(sys_Time - start < nTime);
+	while((sys_Time - start) < nTime);
 }
 
 /*******************************************************************************

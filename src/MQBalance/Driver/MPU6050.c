@@ -43,66 +43,67 @@ u8 MPUInit(void)
 	//设置中断
 	//EXTI_Config();
     //初始化成功，设置参数
-    IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_PWR_MGMT_1, 0x01);			// 退出睡眠模式，设取样时钟为陀螺X轴。
-    IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_SMPLRT_DIV, 0x04);			// 取样时钟4分频，1k/4，取样率为25Hz。
-    IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_CONFIG, 2);					// 低通滤波，截止频率100Hz左右。
-    IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_GYRO_CONFIG, 3<<3);			// 陀螺量程，2000dps
-    IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_ACCEL_CONFIG, 2<<3);			// 加速度计量程，8g。
-    IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_INT_PIN_CFG, 0x32);			// 中断信号为高电平，推挽输出，直到有读取操作才消失，直通辅助I2C。
-    IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_INT_ENABLE, 0x01);			// 使用“数据准备好”中断。
-    IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_USER_CTRL, 0x00);				// 不使用辅助I2C。
+    IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_PWR_MGMT_1, 0x02);			// 退出睡眠模式，设取样时钟为陀螺Y轴。
+    IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_SMPLRT_DIV, 2);			// 取样时钟4分频，1k/4，取样率为25Hz。
+    IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_CONFIG, 0x06);				// 低通滤波，截止频率100Hz左右。
+    IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_GYRO_CONFIG, 0x18);			// 陀螺量程，2000dps
+    IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_ACCEL_CONFIG, 0x00);			// 加速度计量程，2g。
+    //IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_INT_PIN_CFG, 0x32);			// 中断信号为高电平，推挽输出，直到有读取操作才消失，直通辅助I2C。
+    //IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_INT_ENABLE, 0x01);			// 使用“数据准备好”中断。
+    //IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_USER_CTRL, 0x00);			// 不使用辅助I2C。
     return 1;
 }
 
-u8 MPU_GetAccelX(short *pAccelX)
+
+float MPU_GetAccelX()
 {
-	if(IIC_Read_Buffer(MPU_ADDR, MPU6050_RA_ACCEL_XOUT_H, 2, (u8 *)pAccelX))
-		return 1;
-	else
-		return 0;
+	int temp = (IIC_ReadByte(MPU_ADDR, MPU6050_RA_ACCEL_XOUT_H) << 8) + IIC_ReadByte(MPU_ADDR, MPU6050_RA_ACCEL_XOUT_L);
+	if(temp > 32768)  temp -= 65536;                   //数据类型转换  也可通过short强制类型转换
+	return temp;
 }
 
-u8 MPU_GetAccelY(short *pAccelY)
+float MPU_GetAccelY()
 {
-	if(IIC_Read_Buffer(MPU_ADDR, MPU6050_RA_ACCEL_YOUT_H, 2, (u8 *)pAccelY))
-		return 1;
-	else
-		return 0;
+	int temp = (IIC_ReadByte(MPU_ADDR, MPU6050_RA_ACCEL_YOUT_H) << 8) + IIC_ReadByte(MPU_ADDR, MPU6050_RA_ACCEL_YOUT_L);
+	if(temp > 32768)  temp -= 65536;
+	return temp;
 }
 
-u8 MPU_GetAccelZ(short *pAccelZ)
+float MPU_GetAccelZ()
 {
-	if(IIC_Read_Buffer(MPU_ADDR, MPU6050_RA_ACCEL_ZOUT_H, 2, (u8 *)pAccelZ))
-		return 1;
-	else
-		return 0;
+	int temp = (IIC_ReadByte(MPU_ADDR, MPU6050_RA_ACCEL_ZOUT_H) << 8) + IIC_ReadByte(MPU_ADDR, MPU6050_RA_ACCEL_ZOUT_L);
+	if(temp > 32768)  temp -= 65536;
+	return temp;
 }
 
 
-u8 MPU_GetGyroX(short *pGyroX)
+float MPU_GetGyroX()
 {
-	if(IIC_Read_Buffer(MPU_ADDR, MPU6050_RA_GYRO_XOUT_H, 2, (u8 *)pGyroX))
-		return 1;
-	else
-		return 0;
+	int temp = (IIC_ReadByte(MPU_ADDR, MPU6050_RA_GYRO_XOUT_H) << 8) + IIC_ReadByte(MPU_ADDR, MPU6050_RA_GYRO_XOUT_L);
+	if(temp > 32768)  temp -= 65536;
+	return temp;
 }
 
-u8 MPU_GetGyroY(short *pGyroY)
+float MPU_GetGyroY()
 {
-	if(IIC_Read_Buffer(MPU_ADDR, MPU6050_RA_GYRO_YOUT_H, 2, (u8 *)pGyroY))
-		return 1;
-	else
-		return 0;
+	int temp = (IIC_ReadByte(MPU_ADDR, MPU6050_RA_GYRO_YOUT_H) << 8) + IIC_ReadByte(MPU_ADDR, MPU6050_RA_GYRO_YOUT_L);
+	if(temp > 32768)  temp -= 65536;
+	return temp-40;//清除零偏
 }
 
-u8 MPU_GetGyroZ(short *pGyroZ)
+float MPU_GetGyroZ()
 {
-	if(IIC_Read_Buffer(MPU_ADDR, MPU6050_RA_GYRO_ZOUT_H, 2, (u8 *)pGyroZ))
-		return 1;
-	else
-		return 0;
+	int temp = (IIC_ReadByte(MPU_ADDR, MPU6050_RA_GYRO_ZOUT_H) << 8) + IIC_ReadByte(MPU_ADDR, MPU6050_RA_GYRO_ZOUT_L);
+	if(temp > 32768)  temp -= 65536;
+	return temp;
 }
 
+float MPU_GetTemp()
+{
+	int temp = (IIC_ReadByte(MPU_ADDR, MPU6050_RA_TEMP_OUT_H) << 8) + IIC_ReadByte(MPU_ADDR, MPU6050_RA_TEMP_OUT_L);
+	temp = 35+temp/280; // 计算出温度
+	return temp;
+}
 
 /*********************************END OF FILE**********************************/
 

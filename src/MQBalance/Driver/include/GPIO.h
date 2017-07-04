@@ -62,6 +62,7 @@ extern GPIO_DEV PB15;//PB15/SPI2_MOSITIM1_CH3N
 
 extern GPIO_DEV PC13;//
 extern GPIO_DEV PC14;//
+extern GPIO_DEV PD13;//
 /* Exported Functions --------------------------------------------------------*/
 void GPIO_Config(GPIO_DEV *dev,GPIOMode_TypeDef mode);
 void GPIO_WritePin(GPIO_DEV *dev,GPIO_STA state);

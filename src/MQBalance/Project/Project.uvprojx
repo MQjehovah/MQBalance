@@ -123,7 +123,7 @@
             <Oh166RecLen>16</Oh166RecLen>
           </OPTHX>
           <Simulator>
-            <UseSimulator>0</UseSimulator>
+            <UseSimulator>1</UseSimulator>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
             <RunToMain>1</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
@@ -135,7 +135,7 @@
             <RestoreSysVw>1</RestoreSysVw>
           </Simulator>
           <Target>
-            <UseTarget>1</UseTarget>
+            <UseTarget>0</UseTarget>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
             <RunToMain>1</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
@@ -147,7 +147,7 @@
             <RestoreSysVw>1</RestoreSysVw>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
-          <TargetSelection>6</TargetSelection>
+          <TargetSelection>4</TargetSelection>
           <SimDlls>
             <CpuDll></CpuDll>
             <CpuDllArguments></CpuDllArguments>
@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CMSIS;..\FWLib\include;..\User\include;..\Driver\include</IncludePath>
+              <IncludePath>..\CMSIS;..\FWLib\include;..\User\include;..\Driver\include;..\Driver\eMPL</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -478,6 +478,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\delay.c</FilePath>
             </File>
+            <File>
+              <FileName>pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\pid.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -523,7 +528,15 @@
               <FileType>1</FileType>
               <FilePath>..\Driver\MPU6050.c</FilePath>
             </File>
+            <File>
+              <FileName>MOTOR.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\MOTOR.c</FilePath>
+            </File>
           </Files>
+        </Group>
+        <Group>
+          <GroupName>eMPL</GroupName>
         </Group>
       </Groups>
     </Target>

@@ -48,6 +48,8 @@ GPIO_DEV PB15 = {GPIOB,GPIO_Pin_15};
 GPIO_DEV PC13 = {GPIOC,GPIO_Pin_13};
 GPIO_DEV PC14 = {GPIOC,GPIO_Pin_14};
 
+GPIO_DEV PD13 = {GPIOD,GPIO_Pin_13};
+
 //GPIO_DEV PIN_MAP[10];
 
 /* Functions -----------------------------------------------------------------*/

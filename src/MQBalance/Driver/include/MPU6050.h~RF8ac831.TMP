@@ -595,8 +595,6 @@
 #define MPU6050_RA_WHO_AM_I         0x75
 //bit6-bit1 设备身份验证 0x34 最高位和最低位都剔除掉
 /* Exported Functions --------------------------------------------------------*/
-extern float angle;
-
 u8 MPUInit(void);
 float MPU_GetAccelX(void);
 float MPU_GetAccelY(void);
@@ -605,7 +603,5 @@ float MPU_GetGyroX(void);
 float MPU_GetGyroY(void);
 float MPU_GetGyroZ(void);
 float MPU_GetTemp(void);
-void MPU6050_TIM_Config(void);
-
 #endif
 /*********************************END OF FILE**********************************/

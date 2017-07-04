@@ -68,9 +68,9 @@ void LED_Flash(u8 id, u16 time, u8 count)
     for(u8 i = 0; i < count; i++)
     {
         LED_ON(id);
-        delay_ms(time);
+        simple_delay_ms(time);
         LED_OFF(id);
-        delay_ms(time);
+        simple_delay_ms(time);
     }
 }
 /*******************************************************************************

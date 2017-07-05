@@ -13,6 +13,7 @@
 #include "LED.h"
 #include "MPU6050.h"
 #include "MOTOR.h"
+#include "protocol.h"
 /* Definition ----------------------------------------------------------------*/
 /* Functions -----------------------------------------------------------------*/
 /*******************************************************************************
@@ -38,7 +39,7 @@ void NVIC_Config(void)//配置中断优先级
 	NVIC_InitTypeDef NVIC_InitStructure;    
 
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);    
-	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;    
+	NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;    
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;    
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;    
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;    
@@ -73,7 +74,6 @@ int main(void)
 	RCC_Config();
 	NVIC_Config();
 	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable,ENABLE);//关闭jtag，保留swd。
-	//SysTick_init();
 	LED_init();
 	LED_Flash(0,500,2);
 	USART_Config(USART1,9600);
@@ -85,15 +85,19 @@ int main(void)
 		simple_delay_ms(500);
 	}
 	USART_SendStr(USART1,"MPU6050 Init OK\n");
+	//SysTick_init();
 	//SysTick_BindHandle(Tick_CallBack);
 	while(1)
 	{
 		simple_delay_ms(10);
 //		printf("Gyro_Y:%d  ",Gyro_Y);
 //		printf("angle_Accel:%f  ",angle_Accel);
-		MOTOR_L_SetPWM(2000);
-		MOTOR_R_SetPWM(2000);
-		printf("%f\r\n",angle);
+//		Motor_Set_Dir(0);
+//		MOTOR_L_SetPWM(4500);
+//		MOTOR_R_SetPWM(4500);
+		SetData((int)(angle));
+		DataUpload();
+		//printf("%f\r\n",angle);
 	}
 }
 /*********************************END OF FILE**********************************/

@@ -39,5 +39,6 @@ void MOTOR_Stop(u8 id);
 void MOTOR_Set_Speed(u8 id,u16 speed);
 void MOTOR_L_SetPWM(u16 duty);
 void MOTOR_R_SetPWM(u16 duty);
+void Motor_Set_Dir(u8 dir);
 /*********************************END OF FILE**********************************/
 #endif

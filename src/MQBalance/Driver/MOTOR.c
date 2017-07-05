@@ -127,12 +127,21 @@ void MOTOR_Set_Speed(u8 id, u16 speed)
   * @retval None
   * @Note   None
 *******************************************************************************/
-void Motor_Set_Dir(MOTOR_DEV * motor, u8 dir)
+void Motor_Set_Dir(u8 dir)
 {
-    motor->dir = dir;
-    if( motor->dir)
-		;
+    if(dir)
+	{
+		GPIO_WritePin(&MOTOR_L_DIR1_GPIO,LOW);
+		GPIO_WritePin(&MOTOR_L_DIR2_GPIO,HIGH);
+		GPIO_WritePin(&MOTOR_R_DIR1_GPIO,LOW);
+		GPIO_WritePin(&MOTOR_R_DIR2_GPIO,HIGH);
+	}
     else
-        ;
+	{
+		GPIO_WritePin(&MOTOR_L_DIR1_GPIO,HIGH);
+		GPIO_WritePin(&MOTOR_L_DIR2_GPIO,LOW);
+		GPIO_WritePin(&MOTOR_R_DIR1_GPIO,HIGH);
+		GPIO_WritePin(&MOTOR_R_DIR2_GPIO,LOW);
+	}
 }
 /*********************************END OF FILE**********************************/

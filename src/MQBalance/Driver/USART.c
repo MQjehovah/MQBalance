@@ -143,6 +143,19 @@ void USART_485_SendStr(USART_TypeDef *USARTx,char* senddata)
 	GPIO_WritePin(RS485EN,LOW);
 }
 
+/*******************************************************************************
+  * @brief  串口发送数组
+  * @param  None
+  * @retval None
+  * @Note   None
+*******************************************************************************/
+void USART_SendArray(USART_TypeDef *USARTx, u8 data[], u16 count)
+{
+    u16 i = 0;
+    for(i = 0; i < count; i++)
+        USART_SendChar(USARTx, data[i]);
+}
+
 //不使用半主机模式
 #if 1 //如果没有这段，则需要在target选项中选择使用USE microLIB
 #pragma import(__use_no_semihosting)

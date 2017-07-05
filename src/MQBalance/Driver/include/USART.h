@@ -24,5 +24,6 @@ void USART_SendChar(USART_TypeDef *USARTx,char Data);
 void USART_485_SendChar(USART_TypeDef *USARTx,char Data);
 void USART_SendStr(USART_TypeDef *USARTx,char* senddata);
 void USART_485_SendStr(USART_TypeDef *USARTx,char* senddata);
+void USART_SendArray(USART_TypeDef *USARTx, u8 data[], u16 count);
 /*********************************END OF FILE**********************************/
 #endif

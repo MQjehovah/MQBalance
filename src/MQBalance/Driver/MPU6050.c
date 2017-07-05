@@ -13,6 +13,7 @@
 #include "EXTI.h"
 #include "math.h"
 #include "pid.h"
+#include "MOTOR.h"
 /* Definition ----------------------------------------------------------------*/
 /*******************************************************************************
   * @brief  MPU6050Init   
@@ -46,7 +47,7 @@ u8 MPUInit(void)
 	//EXTI_Config();
     //初始化成功，设置参数
     IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_PWR_MGMT_1, 0x02);			// 退出睡眠模式，设取样时钟为陀螺Y轴。
-    IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_SMPLRT_DIV, 2);			// 取样时钟4分频，1k/4，取样率为25Hz。
+    IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_SMPLRT_DIV, 2);				// 取样时钟4分频，1k/4，取样率为25Hz。
     IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_CONFIG, 0x06);				// 低通滤波，截止频率100Hz左右。
     IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_GYRO_CONFIG, 0x18);			// 陀螺量程，2000dps
     IIC_WriteOneByte(MPU_ADDR, MPU6050_RA_ACCEL_CONFIG, 0x00);			// 加速度计量程，2g。
@@ -128,11 +129,13 @@ void MPU6050_TIM_Config()
     TIM_Cmd(TIM3, ENABLE);
 }
 
+
+int pwm;
 int Gyro_X,Gyro_Y,Gyro_Z;
 int Accel_X,Accel_Y,Accel_Z;
 
 float angle,angle_Accel,angle_Gyro; 	
-
+float Balance_GyroY;
 float GetAngel()
 {
 	Accel_X = MPU_GetAccelX();
@@ -140,8 +143,8 @@ float GetAngel()
 	Gyro_Y = MPU_GetGyroY();
 	Gyro_Z = MPU_GetGyroZ();
 	angle_Accel = atan2(Accel_X, Accel_Z) * 57.3f;	//计算倾角
-	angle = 0.1 * angle_Accel + 0.9 * (angle - (Gyro_Y / 16.4f) * 0.01);
-	//Balance_GyroY = Gyro_Y;							//更新平衡角速度
+	angle = 0.02 * angle_Accel + 0.98 * (angle - (Gyro_Y / 16.4f) * 0.01);
+	Balance_GyroY = -Gyro_Y;							//更新平衡角速度
 	//Balance_GyroZ = Gyro_Z;							//更新转向角速度
 	//Acceleration_Z = Accel_Z;						//更新Z轴加速度计
 	return angle;									//更新平衡倾角
@@ -153,13 +156,12 @@ float GetAngel()
 入口参数：无
 返回  值：无
 **************************************************************************/
-void Xianfu_Pwm(int pwm)
+void Xianfu_Pwm()
 {
     int Amplitude = 6900;  //===PWM满幅是7200 限制在6900
     if(pwm < -Amplitude) pwm = -Amplitude;
     if(pwm > Amplitude)  pwm = Amplitude;
 }
-
 
 PID_Type POS_PID = {.kP = 10,.kD = 0.1};
 float target =0;
@@ -167,12 +169,28 @@ void TIM3_IRQHandler(void)
 {
 	if(TIM_GetITStatus(TIM3,TIM_IT_Update) != RESET)	//发生了捕获中断   定时器计数没有溢出  
 	{ 
+		float kp = 10;
+		float kd = 0.5;
 		GetAngel();
-		int pwm = LocPIDCalc(&POS_PID,angle-target);
-		Xianfu_Pwm(pwm);
-		
-		
-		
+		//int pwm = LocPIDCalc(&POS_PID,angle-target);
+		pwm = kp * (angle-target) + Balance_GyroY * kd; //===计算平衡控制的电机PWM  PD控制   kp是P系数 kd是D系数
+		//Xianfu_Pwm();
+		if(pwm>0)
+		{
+			Motor_Set_Dir(0);
+			pwm+=4500;
+			if(pwm > 6900)  pwm = 6900;
+			MOTOR_L_SetPWM(pwm);
+			MOTOR_R_SetPWM(pwm);
+		}
+		else
+		{
+			Motor_Set_Dir(1);
+			pwm-=4500;
+			if(pwm < -6900)  pwm = -6900;
+			MOTOR_L_SetPWM(-pwm);
+			MOTOR_R_SetPWM(-pwm);
+		}
 		TIM_ClearFlag(TIM3, TIM_FLAG_Update);//清除TIM的更新标志位
 	}
 }
